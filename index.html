@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новогоднее Поздравление</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0c1445 0%, #1a2a6c 50%, #2c3e50 100%);
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .snowflake {
+            position: absolute;
+            color: white;
+            font-size: 1.5em;
+            user-select: none;
+            z-index: 1000;
+            animation: fall linear infinite;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+        
+        .snow-ground {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 150px;
+            background: linear-gradient(to top, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+            z-index: 1;
+        }
+        
+        .tree {
+            position: absolute;
+            bottom: 150px;
+            left: 50px;
+            z-index: 5;
+        }
+        
+        .star {
+            position: absolute;
+            top: 50px;
+            right: 100px;
+            width: 50px;
+            height: 50px;
+            background: #ffd700;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            animation: twinkle 2s infinite alternate;
+            z-index: 10;
+        }
+        
+        @keyframes twinkle {
+            from {
+                opacity: 0.5;
+                transform: scale(1);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+        
+        .firework {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            z-index: 100;
+        }
+        
+        .santa-container {
+            position: absolute;
+            top: 80px;
+            left: -500px;
+            z-index: 20;
+            transition: transform 0.3s ease;
+        }
+        
+        .new-year-message {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .new-year-text {
+            font-size: 8rem;
+            background: linear-gradient(45deg, #ff6b6b, #ffd700, #4ecdc4, #45b7d1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.8;
+            }
+        }
+        
+        /* Snowball game styles */
+        .snowball-game {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #1a3a6c 0%, #2c5282 50%, #1e3a8a 100%);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+        
+        .child {
+            position: absolute;
+            width: 60px;
+            height: 100px;
+            cursor: pointer;
+            z-index: 50;
+            transition: transform 0.2s;
+        }
+        
+        .child:hover {
+            transform: scale(1.1);
+        }
+        
+        .snowball {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            z-index: 40;
+            pointer-events: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .snowball::before {
+            content: '';
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+        }
+        
+        .snowball-trail {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            z-index: 39;
+            pointer-events: none;
+        }
+        
+        .game-stats {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            z-index: 60;
+        }
+        
+        .hp-bar {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .hp-heart {
+            width: 30px;
+            height: 30px;
+            background: #ff4d4d;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            transition: all 0.3s;
+        }
+        
+        .hp-heart.lost {
+            opacity: 0.3;
+            transform: scale(0.8);
+        }
+        
+        .game-instructions {
+            position: absolute;
+            bottom: 30px;
+            text-align: center;
+            color: white;
+            font-size: 1.3rem;
+            max-width: 600px;
+            z-index: 60;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 15px;
+        }
+        
+        .game-over {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            display: none;
+            z-index: 100;
+            border: 3px solid #ffd700;
+        }
+        
+        .restart-btn {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.3rem;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .restart-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(255, 107, 107, 0.8);
+        }
+        
+        .score-text {
+            font-size: 2.5rem;
+            margin: 10px 0;
+            color: #ffd700;
+        }
+        
+        .throw-preview {
+            position: absolute;
+            width: 2px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.5);
+            z-index: 38;
+            pointer-events: none;
+            display: none;
+            transform-origin: bottom;
+        }
+    </style>
+</head>
+<body class="text-white font-sans">
+    <div class="star"></div>
+    <div class="tree">
+        <!-- Beautiful Christmas Tree -->
+        <svg width="200" height="300" viewBox="0 0 200 300">
+            <!-- Tree trunk -->
+            <rect x="85" y="250" width="30" height="40" fill="#8B4513" rx="5"/>
+            
+            <!-- Tree branches -->
+            <polygon points="100,20 40,240 160,240" fill="#228B22"/>
+            <polygon points="100,40 50,220 150,220" fill="#2E8B57"/>
+            <polygon points="100,60 60,200 140,200" fill="#32CD32"/>
+            <polygon points="100,80 70,180 130,180" fill="#228B22"/>
+            
+            <!-- Tree decorations -->
+            <circle cx="80" cy="120" r="5" fill="#ff6b6b"/>
+            <circle cx="120" cy="100" r="5" fill="#4ecdc4"/>
+            <circle cx="90" cy="160" r="5" fill="#ffd700"/>
+            <circle cx="110" cy="140" r="5" fill="#ff69b4"/>
+            <circle cx="70" cy="180" r="5" fill="#45b7d1"/>
+            <circle cx="130" cy="160" r="5" fill="#ff6b6b"/>
+            
+            <!-- Tree star -->
+            <path d="M100 10 L105 25 L120 25 L110 35 L115 50 L100 45 L85 50 L90 35 L80 25 L95 25 Z" fill="#ffd700"/>
+            
+            <!-- Snow on tree -->
+            <path d="M40 240 L160 240 L155 235 L45 235 Z" fill="white" opacity="0.7"/>
+            <path d="M50 220 L150 220 L145 215 L55 215 Z" fill="white" opacity="0.6"/>
+            <path d="M60 200 L140 200 L135 195 L65 195 Z" fill="white" opacity="0.5"/>
+            <path d="M70 180 L130 180 L125 175 L75 175 Z" fill="white" opacity="0.4"/>
+        </svg>
+    </div>
+    
+    <!-- Beautiful Santa Claus with reindeer and proper sleigh -->
+    <div class="santa-container" id="santa">
+        <svg width="900" height="220" viewBox="0 0 1800 440">
+            <!-- Clouds -->
+            <ellipse cx="250" cy="90" rx="60" ry="30" fill="white" opacity="0.7"/>
+            <ellipse cx="320" cy="80" rx="55" ry="28" fill="white" opacity="0.6"/>
+            <ellipse cx="700" cy="100" rx="65" ry="33" fill="white" opacity="0.5"/>
+            <ellipse cx="770" cy="90" rx="58" ry="29" fill="white" opacity="0.6"/>
+            
+            <!-- Reindeer 1 (Rudolf) - FRONT -->
+            <ellipse cx="150" cy="250" rx="35" ry="30" fill="#5D4037"/>
+            <circle cx="160" cy="240" r="7" fill="black"/>
+            <circle cx="155" cy="238" r="3" fill="white"/>
+            <circle cx="175" cy="230" r="10" fill="#ff4d4d"/> <!-- Rudolf's red nose -->
+            <path d="M130 215 L130 170 L120 160 M142 215 L142 170 L152 160" stroke="#3E2723" stroke-width="5" fill="none"/>
+            <ellipse cx="150" cy="285" rx="14" ry="22" fill="#5D4037"/>
+            <ellipse cx="135" cy="285" rx="12" ry="18" fill="#5D4037"/>
+            <ellipse cx="165" cy="285" rx="12" ry="18" fill="#5D4037"/>
+            <path d="M125 250 Q138 270 150 250 Q162 270 175 250" stroke="#3E2723" stroke-width="4" fill="none"/>
+            
+            <!-- Reindeer 2 - FRONT -->
+            <ellipse cx="260" cy="245" rx="35" ry="30" fill="#6D4C41"/>
+            <circle cx="270" cy="235" r="7" fill="black"/>
+            <circle cx="265" cy="233" r="3" fill="white"/>
+            <path d="M240 210 L240 165 L230 155 M252 210 L252 165 L262 155" stroke="#3E2723" stroke-width="5" fill="none"/>
+            <ellipse cx="260" cy="280" rx="14" ry="22" fill="#6D4C41"/>
+            <ellipse cx="245" cy="280" rx="12" ry="18" fill="#6D4C41"/>
+            <ellipse cx="275" cy="280" rx="12" ry="18" fill="#6D4C41"/>
+            <path d="M235 245 Q248 265 260 245 Q272 265 285 245" stroke="#3E2723" stroke-width="4" fill="none"/>
+            
+            <!-- Reindeer 3 - FRONT -->
+            <ellipse cx="370" cy="240" rx="35" ry="30" fill="#795548"/>
+            <circle cx="380" cy="230" r="7" fill="black"/>
+            <circle cx="375" cy="228" r="3" fill="white"/>
+            <path d="M350 205 L350 160 L340 150 M362 205 L362 160 L372 150" stroke="#3E2723" stroke-width="5" fill="none"/>
+            <ellipse cx="370" cy="275" rx="14" ry="22" fill="#795548"/>
+            <ellipse cx="355" cy="275" rx="12" ry="18" fill="#795548"/>
+            <ellipse cx="385" cy="275" rx="12" ry="18" fill="#795548"/>
+            <path d="M345 240 Q358 260 370 240 Q382 260 395 240" stroke="#3E2723" stroke-width="4" fill="none"/>
+            
+            <!-- Reindeer 4 - FRONT -->
+            <ellipse cx="480" cy="235" rx="35" ry="30" fill="#8D6E63"/>
+            <circle cx="490" cy="225" r="7" fill="black"/>
+            <circle cx="485" cy="223" r="3" fill="white"/>
+            <path d="M460 200 L460 155 L450 145 M472 200 L472 155 L482 145" stroke="#3E2723" stroke-width="5" fill="none"/>
+            <ellipse cx="480" cy="270" rx="14" ry="22" fill="#8D6E63"/>
+            <ellipse cx="465" cy="270" rx="12" ry="18" fill="#8D6E63"/>
+            <ellipse cx="495" cy="270" rx="12" ry="18" fill="#8D6E63"/>
+            <path d="M455 235 Q468 255 480 235 Q492 255 505 235" stroke="#3E2723" stroke-width="4" fill="none"/>
+            
+            <!-- Reindeer harness -->
+            <line x1="185" y1="250" x2="225" y2="245" stroke="#3E2723" stroke-width="5"/>
+            <line x1="295" y1="245" x2="335" y2="240" stroke="#3E2723" stroke-width="5"/>
+            <line x1="405" y1="240" x2="445" y2="235" stroke="#3E2723" stroke-width="5"/>
+            <line x1="150" y1="220" x2="480" y2="210" stroke="#D4AF37" stroke-width="4" stroke-dasharray="12,6"/>
+            
+            <!-- Sleigh - Proper traditional sleigh -->
+            <path d="M520 260 
+                     Q540 295 580 290 
+                     L880 290 
+                     Q920 295 940 260 
+                     L930 240 
+                     Q910 255 880 250 
+                     L580 250 
+                     Q550 255 530 240 
+                     Z" fill="#8B4513" stroke="#5D4037" stroke-width="6"/>
+            
+            <!-- Sleigh seat -->
+            <path d="M560 250 
+                     Q580 230 620 230 
+                     L840 230 
+                     Q880 230 900 250 
+                     L880 250 
+                     L600 250 
+                     Z" fill="#A0522D" stroke="#5D4037" stroke-width="3"/>
+            
+            <!-- Sleigh cushions -->
+            <rect x="620" y="225" width="200" height="20" rx="10" fill="#DC143C"/>
+            <rect x="640" y="220" width="160" height="5" rx="2" fill="white"/>
+            
+            <!-- Sleigh runners -->
+            <path d="M530 290 Q550 310 580 305 L880 305 Q910 310 930 290" fill="none" stroke="#3E2723" stroke-width="8"/>
+            <path d="M540 295 Q555 308 580 303 L880 303 Q905 308 920 295" fill="none" stroke="#D4AF37" stroke-width="3"/>
+            
+            <!-- Sleigh decorations -->
+            <circle cx="560" cy="270" r="8" fill="#D4AF37"/>
+            <circle cx="900" cy="270" r="8" fill="#D4AF37"/>
+            
+            <!-- Santa - Fat, jolly, with beard -->
+            <circle cx="720" cy="170" r="60" fill="#DC143C"/> <!-- Big belly -->
+            <circle cx="720" cy="115" r="45" fill="#DC143C"/> <!-- Body -->
+            <circle cx="720" cy="70" r="38" fill="#FF6347"/> <!-- Face -->
+            <circle cx="700" cy="62" r="7" fill="black"/> <!-- Left eye -->
+            <circle cx="740" cy="62" r="7" fill="black"/> <!-- Right eye -->
+            <circle cx="720" cy="80" r="10" fill="#DC143C"/> <!-- Nose -->
+            <path d="M695 95 Q720 110 745 95" stroke="black" fill="none" stroke-width="4"/> <!-- Big smile -->
+            
+            <!-- Big white beard -->
+            <path d="M670 80 Q685 115 700 130 
+                     Q720 140 740 130 
+                     Q755 115 770 80 
+                     Q750 105 720 115 
+                     Q690 105 670 80" fill="white"/>
+            
+            <!-- Santa's hat -->
+            <path d="M720 30 L720 10 Q755 25 765 50 L720 70 Z" fill="#DC143C"/>
+            <circle cx="720" cy="10" r="14" fill="white"/>
+            
+            <!-- Santa's arms -->
+            <ellipse cx="650" cy="135" rx="22" ry="28" fill="#FF6347" transform="rotate(-20 650 135)"/>
+            <ellipse cx="790" cy="135" rx="22" ry="28" fill="#FF6347" transform="rotate(20 790 135)"/>
+            
+            <!-- Santa's belt -->
+            <rect x="675" y="155" width="90" height="25" fill="#D4AF37" rx="8"/>
+            <rect x="710" y="155" width="25" height="25" fill="#5D4037" rx="5"/>
+            
+            <!-- Gifts in sleigh -->
+            <rect x="820" y="235" width="55" height="40" rx="10" fill="#DC143C"/>
+            <rect x="820" y="235" width="55" height="40" fill="none" stroke="white" stroke-width="5"/>
+            <rect x="885" y="240" width="50" height="35" rx="10" fill="#4169E1"/>
+            <rect x="885" y="240" width="50" height="35" fill="none" stroke="white" stroke-width="5"/>
+            
+            <!-- Magic sparkles -->
+            <circle cx="600" cy="160" r="5" fill="yellow" opacity="0.9">
+                <animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="700" cy="130" r="5" fill="yellow" opacity="0.9">
+                <animate attributeName="opacity" values="0.3;1;0.3" dur="1.8s" repeatCount="indefinite" begin="0.3s"/>
+            </circle>
+            <circle cx="800" cy="150" r="5" fill="yellow" opacity="0.9">
+                <animate attributeName="opacity" values="0.3;1;0.3" dur="1.6s" repeatCount="indefinite" begin="0.6s"/>
+            </circle>
+            <circle cx="900" cy="140" r="5" fill="yellow" opacity="0.9">
+                <animate attributeName="opacity" values="0.3;1;0.3" dur="1.7s" repeatCount="indefinite" begin="0.9s"/>
+            </circle>
+        </svg>
+    </div>
+    
+    <div class="container mx-auto max-w-2xl p-8 mt-16 relative z-10">
+        <h1 class="text-4xl md:text-5xl font-bold mb-6 text-center bg-gradient-to-r from-red-500 via-yellow-400 to-blue-400 bg-clip-text text-transparent">
+            🎉 С Новым Годом! 🎉
+        </h1>
+        <p class="text-xl md:text-2xl mb-8 text-center leading-relaxed">
+            Дорогой друг! Поздравляю тебя с наступающим Новым годом! Пусть этот год принесет тебе счастье, успех и исполнение всех желаний!
+        </p>
+        
+        <div class="instruction text-xl font-semibold mb-6 text-yellow-300 text-center" id="instruction">
+            Кликай, чтобы новый год стал быстрее! ⏰
+        </div>
+        
+        <div class="clicker-container text-center">
+            <button id="clickButton" class="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-bold py-4 px-8 rounded-full text-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 active:scale-95">
+                Нажми меня!
+            </button>
+            <div class="counter text-5xl font-bold mt-6 text-cyan-300" id="counter">0</div>
+        </div>
+    </div>
+    
+    <div class="snow-ground"></div>
+    
+    <!-- New Year Message Overlay -->
+    <div class="new-year-message" id="newYearMessage">
+        <div class="new-year-text font-bold">С НОВЫМ ГОДОМ!</div>
+    </div>
+    
+    <!-- Snowball Game -->
+    <div class="snowball-game" id="snowballGame">
+        <div class="game-stats">
+            <div>🎯 Попаданий: <span id="hits">0</span></div>
+            <div class="hp-bar" id="hpBar">
+                <div class="hp-heart"></div>
+                <div class="hp-heart"></div>
+                <div class="hp-heart"></div>
+            </div>
+        </div>
+        
+        <div class="game-instructions">
+            <p>Кликните и удерживайте на снежке, затем отпустите чтобы кинуть!</p>
+            <p>Попадайте в детей, чтобы набрать очки! Промах = потеря здоровья ❤️</p>
+        </div>
+        
+        <div class="game-over" id="gameOver">
+            <h2 class="text-4xl font-bold mb-4">❄️ Игра окончена! ❄️</h2>
+            <div class="score-text">Ваш результат: <span id="finalScore">0</span></div>
+            <button class="restart-btn" onclick="restartGame()">Играть снова</button>
+        </div>
+    </div>
+    
+    <script>
+        // Создание снежинок
+        function createSnowflakes() {
+            const snowflakeCount = 150;
+            const container = document.body;
+            
+            for (let i = 0; i < snowflakeCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                snowflake.innerHTML = '❄';
+                
+                const leftPos = Math.random() * 100;
+                const topPos = Math.random() * 100;
+                const size = Math.random() * 2 + 0.5;
+                const duration = Math.random() * 25 + 20;
+                const delay = Math.random() * 15;
+                
+                snowflake.style.left = `${leftPos}%`;
+                snowflake.style.top = `${topPos}%`;
+                snowflake.style.fontSize = `${size}em`;
+                snowflake.style.animationDuration = `${duration}s`;
+                snowflake.style.animationDelay = `${delay}s`;
+                
+                container.appendChild(snowflake);
+            }
+        }
+        
+        // Счетчик кликов и скорость Деда Мороза
+        let clickCount = 0;
+        let santaSpeed = 0.15; // Очень медленная скорость
+        let santaHasFlown = false;
+        const counterElement = document.getElementById('counter');
+        const clickButton = document.getElementById('clickButton');
+        const instructionElement = document.getElementById('instruction');
+        const santaElement = document.getElementById('santa');
+        const newYearMessage = document.getElementById('newYearMessage');
+        const snowballGame = document.getElementById('snowballGame');
+        
+        // Позиция Деда Мороза
+        let santaPosition = -500;
+        const screenWidth = window.innerWidth;
+        
+        // Анимация Деда Мороза
+        function animateSanta() {
+            if (santaHasFlown) return;
+            
+            santaPosition += santaSpeed;
+            santaElement.style.left = `${santaPosition}px`;
+            
+            // Если Дед Мороз долетел до конца экрана
+            if (santaPosition > screenWidth + 500) {
+                santaHasFlown = true;
+                showNewYearMessage();
+                return;
+            }
+            
+            requestAnimationFrame(animateSanta);
+        }
+        
+        // Показать сообщение "С НОВЫМ ГОДОМ"
+        function showNewYearMessage() {
+            newYearMessage.style.display = 'flex';
+            
+            setTimeout(() => {
+                newYearMessage.style.display = 'none';
+                setTimeout(() => {
+                    snowballGame.style.display = 'flex';
+                    startSnowballGame();
+                }, 500);
+            }, 3000);
+        }
+        
+        // Счетчик кликов
+        clickButton.addEventListener('click', function(event) {
+            clickCount++;
+            counterElement.textContent = clickCount;
+            
+            // Увеличиваем скорость очень медленно
+            santaSpeed = 0.15 + (clickCount * 0.02);
+            
+            // Создаем фейерверк
+            createFirework(event.clientX, event.clientY);
+            
+            // Анимация кнопки
+            clickButton.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                clickButton.style.transform = 'scale(1)';
+            }, 100);
+            
+            // Обновляем инструкцию
+            updateInstruction();
+        });
+        
+        // Создание фейерверка
+        function createFirework(x, y) {
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#ffd700', '#ff69b4', '#9b59b6'];
+            
+            for (let i = 0; i < 30; i++) {
+                const firework = document.createElement('div');
+                firework.classList.add('firework');
+                
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                firework.style.backgroundColor = color;
+                
+                firework.style.left = `${x}px`;
+                firework.style.top = `${y}px`;
+                
+                document.body.appendChild(firework);
+                
+                const angle = Math.random() * Math.PI * 2;
+                const distance = Math.random() * 200 + 70;
+                const duration = Math.random() * 1.5 + 0.8;
+                
+                const endX = x + Math.cos(angle) * distance;
+                const endY = y + Math.sin(angle) * distance;
+                
+                firework.animate([
+                    { 
+                        transform: 'translate(0, 0) scale(1)',
+                        opacity: 1
+                    },
+                    { 
+                        transform: `translate(${endX - x}px, ${endY - y}px) scale(0)`,
+                        opacity: 0
+                    }
+                ], {
+                    duration: duration * 1000,
+                    easing: 'cubic-bezier(0.1, 0.8, 0.2, 1)'
+                });
+                
+                setTimeout(() => {
+                    firework.remove();
+                }, duration * 1000);
+            }
+        }
+        
+        // Обновление инструкции
+        function updateInstruction() {
+            const speedText = (santaSpeed * 5).toFixed(1);
+            instructionElement.textContent = `Дед Мороз летит со скоростью ${speedText}x! Кликай быстрее! ⚡`;
+        }
+        
+        // ========== Snowball Game ==========
+        let hits = 0;
+        let hp = 3;
+        let children = [];
+        let currentSnowball = null;
+        let isDragging = false;
+        let dragStart = { x: 0, y: 0 };
+        let gameActive = false;
+        let gameLoop;
+        let snowballCooldown = false;
+        let lastThrowTime = 0;
+        let throwPreview = null;
+        
+        function startSnowballGame() {
+            gameActive = true;
+            hits = 0;
+            hp = 3;
+            document.getElementById('hits').textContent = hits;
+            updateHPDisplay();
+            
+            // Очищаем предыдущих детей
+            children.forEach(child => {
+                if (child.element) child.element.remove();
+            });
+            children = [];
+            
+            // Создаем детей
+            for (let i = 0; i < 5; i++) {
+                createChild();
+            }
+            
+            // Создаем снежок для броска
+            createSnowball();
+            
+            // Создаем предпросмотр броска
+            throwPreview = document.createElement('div');
+            throwPreview.className = 'throw-preview';
+            snowballGame.appendChild(throwPreview);
+            
+            // Запускаем игровой цикл
+            gameLoop = setInterval(() => {
+                if (!gameActive) return;
+                
+                // Дети двигаются случайно
+                children.forEach(child => {
+                    if (!child.element) return;
+                    
+                    child.x += child.dx;
+                    child.y += child.dy;
+                    
+                    // Отскок от стен
+                    if (child.x < 50 || child.x > window.innerWidth - 110) {
+                        child.dx *= -1;
+                    }
+                    if (child.y < 150 || child.y > window.innerHeight - 210) {
+                        child.dy *= -1;
+                    }
+                    
+                    child.element.style.left = `${child.x}px`;
+                    child.element.style.top = `${child.y}px`;
+                });
+            }, 30);
+        }
+        
+        function createChild() {
+            const child = document.createElement('div');
+            child.className = 'child';
+            
+            // Случайный ребенок
+            const isBoy = Math.random() > 0.5;
+            child.innerHTML = `
+                <svg width="60" height="100" viewBox="0 0 60 100">
+                    <!-- Head -->
+                    <circle cx="30" cy="25" r="15" fill="#FFD3B6"/>
+                    
+                    <!-- Body -->
+                    <rect x="20" y="40" width="20" height="35" rx="5" fill="${isBoy ? '#3498db' : '#e84393'}"/>
+                    
+                    <!-- Legs -->
+                    <rect x="20" y="75" width="8" height="20" rx="4" fill="#34495e"/>
+                    <rect x="32" y="75" width="8" height="20" rx="4" fill="#34495e"/>
+                    
+                    <!-- Arms -->
+                    <rect x="10" y="45" width="10" height="8" rx="4" fill="#FFD3B6"/>
+                    <rect x="40" y="45" width="10" height="8" rx="4" fill="#FFD3B6"/>
+                    
+                    <!-- Face -->
+                    <circle cx="25" cy="22" r="3" fill="black"/>
+                    <circle cx="35" cy="22" r="3" fill="black"/>
+                    <path d="M25 28 Q30 32 35 28" stroke="black" fill="none" stroke-width="1.5"/>
+                    
+                    <!-- Hair -->
+                    ${isBoy ? 
+                        '<path d="M18 15 Q30 5 42 15 Q38 10 30 8 Q22 10 18 15" fill="#8e44ad"/>' :
+                        '<circle cx="22" cy="15" r="6" fill="#e84393"/><circle cx="38" cy="15" r="6" fill="#e84393"/>'
+                    }
+                </svg>
+            `;
+            
+            // Случайная позиция
+            const x = 100 + Math.random() * (window.innerWidth - 220);
+            const y = 150 + Math.random() * (window.innerHeight - 360);
+            const dx = (Math.random() - 0.5) * 3;
+            const dy = (Math.random() - 0.5) * 3;
+            
+            child.style.left = `${x}px`;
+            child.style.top = `${y}px`;
+            
+            snowballGame.appendChild(child);
+            
+            // Добавляем в массив детей
+            const childObj = {
+                element: child,
+                x: x,
+                y: y,
+                dx: dx,
+                dy: dy
+            };
+            children.push(childObj);
+            
+            // Обработчик клика по ребенку
+            child.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (!gameActive) return;
+                
+                hits++;
+                document.getElementById('hits').textContent = hits;
+                
+                // Эффект попадания
+                child.style.transform = 'scale(0.8)';
+                setTimeout(() => {
+                    if (child) child.style.transform = 'scale(1)';
+                }, 200);
+                
+                // Перемещаем ребенка на новую позицию
+                childObj.x = 100 + Math.random() * (window.innerWidth - 220);
+                childObj.y = 150 + Math.random() * (window.innerHeight - 360);
+                childObj.dx = (Math.random() - 0.5) * 3;
+                childObj.dy = (Math.random() - 0.5) * 3;
+                
+                // Создаем новый снежок через паузу
+                if (currentSnowball) {
+                    currentSnowball.remove();
+                    currentSnowball = null;
+                }
+                snowballCooldown = true;
+                setTimeout(() => {
+                    if (gameActive) createSnowball();
+                    snowballCooldown = false;
+                }, 800);
+            });
+        }
+        
+        function createSnowball() {
+            if (!gameActive || snowballCooldown) return;
+            
+            currentSnowball = document.createElement('div');
+            currentSnowball.className = 'snowball';
+            currentSnowball.style.left = '50%';
+            currentSnowball.style.top = '85%';
+            currentSnowball.style.transform = 'translate(-50%, -50%)';
+            
+            snowballGame.appendChild(currentSnowball);
+            
+            // Обработчики событий для снежка
+            currentSnowball.addEventListener('mousedown', startDrag);
+            currentSnowball.addEventListener('touchstart', startDrag, { passive: false });
+        }
+        
+        function startDrag(e) {
+            e.preventDefault();
+            isDragging = true;
+            dragStart.x = e.clientX || e.touches[0].clientX;
+            dragStart.y = e.clientY || e.touches[0].clientY;
+            
+            document.addEventListener('mousemove', dragSnowball);
+            document.addEventListener('touchmove', dragSnowball, { passive: false });
+            document.addEventListener('mouseup', releaseSnowball);
+            document.addEventListener('touchend', releaseSnowball);
+        }
+        
+        function dragSnowball(e) {
+            if (!isDragging || !currentSnowball) return;
+            
+            e.preventDefault();
+            const x = e.clientX || e.touches[0].clientX;
+            const y = e.clientY || e.touches[0].clientY;
+            
+            currentSnowball.style.left = `${x}px`;
+            currentSnowball.style.top = `${y}px`;
+            currentSnowball.style.transform = 'translate(-50%, -50%)';
+            
+            // Показываем предпросмотр броска
+            if (throwPreview) {
+                throwPreview.style.display = 'block';
+                
+                const deltaX = dragStart.x - x;
+                const deltaY = dragStart.y - y;
+                
+                const angle = Math.atan2(deltaY, deltaX);
+                const length = Math.sqrt(deltaX * deltaX + deltaY * deltaY) * 0.5;
+                
+                throwPreview.style.width = `${length}px`;
+                throwPreview.style.left = `${x}px`;
+                throwPreview.style.top = `${y}px`;
+                throwPreview.style.transform = `rotate(${angle + Math.PI/2}rad)`;
+            }
+        }
+        
+        function releaseSnowball(e) {
+            if (!isDragging || !currentSnowball) return;
+            
+            isDragging = false;
+            
+            // Удаляем обработчики
+            document.removeEventListener('mousemove', dragSnowball);
+            document.removeEventListener('touchmove', dragSnowball);
+            document.removeEventListener('mouseup', releaseSnowball);
+            document.removeEventListener('touchend', releaseSnowball);
+            
+            // Скрываем предпросмотр
+            if (throwPreview) {
+                throwPreview.style.display = 'none';
+            }
+            
+            // Бросаем снежок
+            throwSnowball(e);
+        }
+        
+        function throwSnowball(e) {
+            const releaseX = e.clientX || e.changedTouches[0].clientX;
+            const releaseY = e.clientY || e.changedTouches[0].clientY;
+            
+            // Вычисляем направление и силу броска
+            const deltaX = dragStart.x - releaseX;
+            const deltaY = dragStart.y - releaseY;
+            
+            // Анимация полета снежка
+            const snowball = currentSnowball;
+            let posX = releaseX;
+            let posY = releaseY;
+            let velocityX = deltaX * 0.2;
+            let velocityY = deltaY * 0.2;
+            let hitDetected = false;
+            const snowballSize = 40;
+            
+            // Создаем след снежка
+            const createTrail = () => {
+                if (!gameActive || !snowball) return;
+                
+                const trail = document.createElement('div');
+                trail.className = 'snowball-trail';
+                trail.style.left = `${posX}px`;
+                trail.style.top = `${posY}px`;
+                snowballGame.appendChild(trail);
+                
+                // Анимация исчезновения следа
+                setTimeout(() => {
+                    trail.style.opacity = '0';
+                    setTimeout(() => {
+                        if (trail.parentNode) trail.remove();
+                    }, 300);
+                }, 0);
+            };
+            
+            function animateThrow() {
+                if (!gameActive || !snowball) return;
+                
+                posX += velocityX;
+                posY += velocityY;
+                velocityY += 0.6; // Гравитация
+                
+                snowball.style.left = `${posX}px`;
+                snowball.style.top = `${posY}px`;
+                
+                // Создаем след каждые несколько кадров
+                if (Math.random() > 0.7) {
+                    createTrail();
+                }
+                
+                // Проверяем попадание в детей
+                if (!hitDetected) {
+                    for (const child of children) {
+                        if (!child.element) continue;
+                        
+                        const childRect = child.element.getBoundingClientRect();
+                        const snowballRect = snowball.getBoundingClientRect();
+                        
+                        if (
+                            snowballRect.left < childRect.right &&
+                            snowballRect.right > childRect.left &&
+                            snowballRect.top < childRect.bottom &&
+                            snowballRect.bottom > childRect.top
+                        ) {
+                            // Попадание!
+                            hits++;
+                            document.getElementById('hits').textContent = hits;
+                            
+                            // Эффект попадания
+                            child.element.style.transform = 'scale(0.8)';
+                            setTimeout(() => {
+                                if (child.element) child.element.style.transform = 'scale(1)';
+                            }, 200);
+                            
+                            // Перемещаем ребенка
+                            child.x = 100 + Math.random() * (window.innerWidth - 220);
+                            child.y = 150 + Math.random() * (window.innerHeight - 360);
+                            child.dx = (Math.random() - 0.5) * 3;
+                            child.dy = (Math.random() - 0.5) * 3;
+                            
+                            hitDetected = true;
+                            break;
+                        }
+                    }
+                }
+                
+                // Если снежок улетел за экран
+                if (posY > window.innerHeight + 100 || posX < -100 || posX > window.innerWidth + 100) {
+                    if (!hitDetected && gameActive) {
+                        // Промах - теряем здоровье
+                        hp--;
+                        updateHPDisplay();
+                        
+                        if (hp <= 0) {
+                            endGame();
+                            return;
+                        }
+                    }
+                    
+                    snowball.remove();
+                    currentSnowball = null;
+                    
+                    if (gameActive) {
+                        snowballCooldown = true;
+                        setTimeout(() => {
+                            if (gameActive) createSnowball();
+                            snowballCooldown = false;
+                        }, 1200);
+                    }
+                    return;
+                }
+                
+                requestAnimationFrame(animateThrow);
+            }
+            
+            requestAnimationFrame(animateThrow);
+        }
+        
+        function updateHPDisplay() {
+            const hpBar = document.getElementById('hpBar');
+            const hearts = hpBar.querySelectorAll('.hp-heart');
+            
+            hearts.forEach((heart, index) => {
+                if (index >= hp) {
+                    heart.classList.add('lost');
+                } else {
+                    heart.classList.remove('lost');
+                }
+            });
+        }
+        
+        function endGame() {
+            gameActive = false;
+            clearInterval(gameLoop);
+            
+            // Удаляем всех детей и снежки
+            children.forEach(child => {
+                if (child.element) child.element.remove();
+            });
+            if (currentSnowball) currentSnowball.remove();
+            if (throwPreview) throwPreview.remove();
+            
+            document.getElementById('finalScore').textContent = hits;
+            document.getElementById('gameOver').style.display = 'block';
+        }
+        
+        function restartGame() {
+            document.getElementById('gameOver').style.display = 'none';
+            startSnowballGame();
+        }
+        
+        // Инициализация
+        window.addEventListener('load', function() {
+            createSnowflakes();
+            animateSanta();
+        });
+        
+        // Адаптация под размер экрана
+        window.addEventListener('resize', function() {
+            if (gameActive) {
+                children.forEach(child => {
+                    if (child.x > window.innerWidth - 110) child.x = window.innerWidth - 110;
+                    if (child.y > window.innerHeight - 210) child.y = window.innerHeight - 210;
+                });
+            }
+        });
+    </script>
+</body>
+</html>
